@@ -1,0 +1,147 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <title>Phaser - Making your first game, part 1</title>
+    <script src="//cdn.jsdelivr.net/phaser/2.2.2/phaser.min.js"></script>
+    <style type="text/css">
+        body {
+            margin: 0;
+        }
+    </style>
+</head>
+
+<body>
+
+    <script type="text/javascript">
+
+        const skyImage = 'sky';
+        const groundImage = 'ground';
+        const starImage = 'star';
+        const dudeSprite = 'dude';
+        const playerAnimateLeft = 'left';
+        const playerAnimateRight = 'right';
+        const moveVelocity = 150;
+
+        const game = new Phaser.Game(800, 600, Phaser.AUTO, '', { preload: preload, create: create, update: update });
+        let platforms;
+        let player;
+        let cursors;
+        let stars;
+
+        let score = 0
+        let scoreText;
+
+        function preload() {
+            game.load.image(skyImage, 'assets/sky.png');
+            game.load.image(groundImage, 'assets/platform.png');
+            game.load.image(starImage, 'assets/star.png');
+            //sprite i.o. image as it contains animation-frames
+            game.load.spritesheet(dudeSprite, 'assets/dude.png', 32, 48);
+        }
+
+        function create() {
+            //physics => Arcade (= simple lightweight)
+            game.physics.startSystem(Phaser.Physics.ARCADE);
+            //background
+            game.add.sprite(0, 0, skyImage);
+            createPlatform();
+            createPlayer();
+            createStars();
+            //init cursors
+            cursors = game.input.keyboard.createCursorKeys();
+            scoreText = game.add.text(16, 16, getScoreText(), { fontSize: '32px', fill: '#000' });
+
+
+            function createPlatform() {
+                //set platform: ground + 2 ledge
+                platforms = game.add.group();
+                platforms.enableBody = true;
+                let floor = platforms.create(0, game.world.height - 64, groundImage);
+                floor.scale.setTo(2, 2); //fit to width
+                floor.body.immovable = true;
+                createLedge(400, 400);
+                createLedge(-150, 150);
+
+                function createLedge(x, y) {
+                    var ledge = platforms.create(x, y, groundImage);
+                    //avoid that ledges (and floor) move when player puts 'force' on it (eg jump/fall)
+                    ledge.body.immovable = true;
+                }
+            }
+
+            function createPlayer() {
+                //position new player at 32px by 150px (from bottom of game)
+                player = game.add.sprite(32, game.world.height - 150, dudeSprite);
+                //enable physics for player
+                game.physics.arcade.enable(player);
+                //0 =no bounce, 1 = full bounce
+                player.body.bounce.y = 0.2;
+                player.body.gravity.y = 260; //arbitrary - higher = quicker fall
+                player.body.collideWorldBounds = true;
+                //walk-animations - identify sprite-parts in array * 10 frames ps * in loop
+                player.animations.add(playerAnimateLeft, [0, 1, 2, 3], 10, true);
+                player.animations.add(playerAnimateRight, [5, 6, 7, 8], 10, true);
+            }
+
+            function createStars() {
+                stars = game.add.group();
+                //game.physics.arcade.enable(stars);
+                stars.enableBody = true;
+                for (let i = 0; i < 12; i++) {
+                    let star = stars.create(i * 70, 0, starImage);
+                    star.body.gravity.y = 60;
+                    //bounce between 0.7 and 0.9
+                    star.body.bounce.y = 0.7 + Math.random() * 0.2;
+                }
+            }
+
+        }
+
+        ///called by core game loop every frame.
+        function update() {
+            //collision check: take 2 objects and test for collision and perform seperation
+            let physicsEngine = game.physics.arcade;
+            let hitPlatform = physicsEngine.collide(player, platforms);
+            let hitStarOnPlatform = physicsEngine.collide(stars, platforms);
+            let playerHitsStar = physicsEngine.overlap(player, stars, collectStar, null, this);
+            move();
+
+            function move() {
+                //reset movement (=players velocity)
+                player.body.velocity.x = 0;
+                if (cursors.left.isDown) {
+                    player.body.velocity.x = -moveVelocity;
+                    player.animations.play(playerAnimateLeft);
+                } else if (cursors.right.isDown) {
+                    player.body.velocity.x = moveVelocity;
+                    player.animations.play(playerAnimateRight);
+                } else {
+                    //Stop on up/down
+                    player.animations.stop();
+                    //set animationframe to 'standing still'
+                    player.frame = 4;
+                }
+                //jump if player touches ground
+                if (cursors.up.isDown && player.body.touching.down && hitPlatform) {
+                    player.body.velocity.y = -450;
+                }
+            }
+
+            function collectStar(player, star) {
+                star.kill(); //collect = remove from game
+                score += 10;
+                scoreText.text = getScoreText();
+            }
+        }
+
+        function getScoreText() {
+            return 'Score: ' + score;
+        }
+
+    </script>
+
+</body>
+
+</html>
