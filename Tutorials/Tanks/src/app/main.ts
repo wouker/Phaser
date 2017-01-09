@@ -1,3 +1,4 @@
-export function Hello(){
+function Hello(){
     console.log('hello from main.ts');
 }
+Hello();
