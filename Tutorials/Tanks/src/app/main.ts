@@ -1,4 +1,8 @@
+import * as _ from 'lodash';
+
 function Hello(){
-    console.log('hello from main.ts');
+    let coll = [1,2,3];
+    let firstItem = _.first(coll);
+    console.log('hello from main.ts: first item: ' + firstItem);
 }
 Hello();

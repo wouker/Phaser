@@ -5,15 +5,12 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 module.exports = {
     entry: {
         app: './src/app/main.ts',
-        vendor: './src/assets/vendor.js' //todo:does not compute //todo chunks-stuff
+        vendor: './src/assets/vendor.ts'
     },
     devtool: 'source-map',
     resolve: {
-        extensions: ['', '.ts', '.js'],
-        // alias: {
-            //obsolete with vendor.js?
-        //     'phaser': phaser
-        // }
+        modulesDirectories: ['node_modules'], //todo: not sure what this does extra
+        extensions: ['', '.ts', '.js']
     },
     module: {
         //todo: add loader (?) for phaser-files
@@ -23,7 +20,7 @@ module.exports = {
         preLoaders: [{ test: /\.js$/, loader: 'source-map-loader' }]
     },
     plugins: [
-        //todo: uglify-stuff
+        //todo: uglify-stuff? (or only in prod?)
         new HtmlWebpackPlugin({ template: './src/app/index.html' })
     ]
 }
