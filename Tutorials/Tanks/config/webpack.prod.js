@@ -18,7 +18,6 @@ module.exports = webpackMerge(commonConfig, {
             root: process.cwd(),
             verbose: true,
             //dry: false, //true: emulates delete, no physical delete - false default
-        }),
+        })
     ]
-    //todo: run webserver in package.json + set path here (localhost:8080)
 });
