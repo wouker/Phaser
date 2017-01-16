@@ -1,5 +1,5 @@
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-
+const webpack = require('webpack');
 //todo linter stuff
 
 module.exports = {
@@ -21,6 +21,10 @@ module.exports = {
     },
     plugins: [
         //todo: uglify-stuff? (or only in prod?)
-        new HtmlWebpackPlugin({ template: './src/app/index.html' })
+        new HtmlWebpackPlugin({ template: './src/app/index.html' }),
+        new webpack.optimize.CommonsChunkPlugin({
+            name: ['app', 'vendor'],
+            minChuncks: Infinity
+        })
     ]
 }

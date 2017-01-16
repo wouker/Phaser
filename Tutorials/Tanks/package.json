@@ -15,10 +15,11 @@
     "html-webpack-plugin": "2.26.0",
     "source-map-loader": "0.1.5",
     "webpack": "1.14.0",
+    "webpack-dev-server": "^1.16.2",
     "webpack-merge": "2.3.1"
   },
   "scripts": {
-    "start": "webpack --config webpack.config.js --progress --bail",
+    "start": "webpack-dev-server --hot --port 8080 --https",
     "build": "webpack --config config/webpack.prod.js --progress --bail"
   },
   "author": "Wouter Kerkhofs",

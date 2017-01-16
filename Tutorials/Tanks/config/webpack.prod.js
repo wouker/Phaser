@@ -9,11 +9,7 @@ module.exports = webpackMerge(commonConfig, {
         filename: "[name].[chunkhash].js",
         path: "dist" //obsolete for dev when we'll use server
     },
-    plugins: [
-        new webpack.optimize.CommonsChunkPlugin({
-            name: ['app','vendor'],
-            minChuncks: Infinity
-        }),
+    plugins: [        
         new CleanWebPackPlugin(['dist'], {
             root: process.cwd(),
             verbose: true,
