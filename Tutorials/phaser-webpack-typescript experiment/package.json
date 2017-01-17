@@ -2,10 +2,11 @@
   "name": "tanks",
   "version": "1.0.0",
   "description": "tutorial for a tanks-game with phaser - typescript and webpack",
-  "main": "index.js",
+  "main": "main.ts",
   "dependencies": {
     "@types/lodash": "4.14.48",
     "lodash": "4.17.4",
+    "p2": "^0.7.1",
     "phaser": "2.6.2"
   },
   "devDependencies": {
@@ -14,6 +15,7 @@
     "expose-loader": "^0.7.1",
     "html-loader": "0.4.4",
     "html-webpack-plugin": "2.26.0",
+    "json-loader": "^0.5.4",
     "source-map-loader": "0.1.5",
     "webpack": "1.14.0",
     "webpack-dev-server": "^1.16.2",
