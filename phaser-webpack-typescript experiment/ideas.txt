@@ -1,0 +1,40 @@
+GAMEPLAY: angrybirds-worms-catapult...
+
+- player-object
+    - carries gun
+    - sets angle (via mouse)
+- gun-object
+    - shoot-method (on click)
+        - shoot in angle :straight to 90° (90° is straight up and suicide)
+    - force-property (multiplier of bulletdamage)
+    - capacity
+    - min/max bullet width  
+    - each gun own design + shooting-animation  
+- bullet-object
+    - width property
+    - base-damage-property
+- material
+    - on eg. armor but later also terrain
+    - damage reduction
+    - texture
+- enemy-object
+    - calculate bullet-hit
+    - has armor (typeof material)
+    - has heart: if heart hit: dead (WIN)
+    - heart is protecte by armor    
+- terrain: 
+ - bullet hits terrain: stop bullet.
+ - terrain destructeable? not at start
+ - sky background - each level has a own 'floor'
+
+- each level
+    - alter terrain or enemy
+    - phase 2: points, less shots is more points
+    - first level: straight, no armor
+    - second level: 1 bump, only one side armor (learn to shoot in angle)
+    - third level: straight, only one side armor (learn to shoot in angle)
+
+- optionsmenu
+    - popup window
+    - NEW/RESTART - SAVE (lvl-start) - LOAD (- HIGHSCORE - ACHI's ) - CREDITS
+
